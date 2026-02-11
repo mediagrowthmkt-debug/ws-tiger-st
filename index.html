@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tigersaut General Contractors - Expert home improvement services in Danvers, MA. Specializing in windows, roofing, siding, decking, and bathroom remodeling.">
+    <meta name="keywords" content="general contractor, roofing, windows, siding, bathroom remodeling, decking, Danvers MA, Massachusetts">
+    <title>Transform Your Home with Tigersaut | General Contractors Danvers MA</title>
+    <link rel="icon" type="image/avif" href="images/logo.avif">
+    <link rel="apple-touch-icon" href="images/logo.avif">
+    <link rel="preload" href="arquivos/hero/20250416_120736.webp" as="image" type="image/webp">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="images/logo.avif" alt="Tigersaut Logo" class="loading-logo">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="images/logo.avif" alt="Tigersaut Logo">
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html" class="nav__link active">Home</a>
+                    </li>
+                    <li class="nav__item nav__dropdown">
+                        <a href="#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
+                        <ul class="dropdown__menu">
+                            <li><a href="windows.html">Window Installation</a></li>
+                            <li><a href="roofing.html">Roofing Services</a></li>
+                            <li><a href="bathroom.html">Bathroom Remodeling</a></li>
+                            <li><a href="painting.html">Painting</a></li>
+                            <li><a href="siding.html">Siding</a></li>
+                            <li><a href="decks.html">Decks</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav__item">
+                        <a href="gallery.html" class="nav__link">Gallery</a>
+                    </li>
+                    <li class="nav__item">
+                        <a href="contact.html" class="nav__link">Contact</a>
+                    </li>
+                </ul>
+                <div class="nav__menu-footer">
+                    <a href="contact.html" class="nav__menu-cta">Get Free Estimate</a>
+                    <a href="tel:+19784796827" class="nav__menu-phone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        (978) 479-6827
+                    </a>
+                </div>
+                <div class="nav__close" id="nav-close">✕</div>
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">☰</div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="nav__overlay" id="nav-overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero__slider">
+            <!-- Slide 1 - Image 1 -->
+            <div class="hero__slide active">
+                <img src="arquivos/hero/20250416_120736.webp" alt="Tigersaut Project" class="hero__media">
+                <div class="hero__overlay"></div>
+            </div>
+            <!-- Slide 2 - Image 2 -->
+            <div class="hero__slide">
+                <img src="arquivos/hero/20250527_161930.webp" alt="Tigersaut Project" class="hero__media" loading="lazy">
+                <div class="hero__overlay"></div>
+            </div>
+            <!-- Slide 3 - Image 3 -->
+            <div class="hero__slide">
+                <img src="arquivos/hero/20250707_073705.webp" alt="Tigersaut Project" class="hero__media" loading="lazy">
+                <div class="hero__overlay"></div>
+            </div>
+        </div>
+        <div class="hero__content container">
+            <h1 class="hero__title">Transform Your Home with Tigersaut</h1>
+            <p class="hero__subtitle">Adding that final touch that brings harmony to your place</p>
+            <p class="hero__description">At Tigersaut, we specialize in general contracting services, focusing on windows, roofing, decking, siding, and remodeling to enhance your home's beauty and functionality.</p>
+            <div class="hero__buttons">
+                <a href="contact.html" class="btn btn-primary">Let's Envision Together</a>
+                <a href="#services" class="btn btn-secondary">Our Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services section" id="services">
+        <div class="container">
+            <div class="section__header">
+                <h2 class="section__title">Our Services</h2>
+                <p class="section__subtitle">Você não precisa entender de construção. Você só precisa confiar em quem entende.</p>
+            </div>
+
+            <div class="services__grid">
+                <!-- Window Installation -->
+                <a href="windows.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Window Installation/window.webp" alt="Window Installation" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Window Installation</h3>
+                        <ul class="service__list">
+                            <li>Lower Energy Bills – Advanced insulation technology</li>
+                            <li>Noise Reduction – Enhanced window designs</li>
+                            <li>Increased Home Value – Modern, energy-efficient windows</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+
+                <!-- Roofing Services -->
+                <a href="roofing.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Roofing Services/roofing 2.webp" alt="Roofing Services" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Roofing Services</h3>
+                        <ul class="service__list">
+                            <li>Superior Weather Protection – High-quality materials</li>
+                            <li>Energy Efficiency & Ventilation – Proper insulation</li>
+                            <li>Enhanced Durability – Expert craftsmanship</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+
+                <!-- Bathroom Remodeling -->
+                <a href="bathroom.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Bathroom Remodeling/bathrrom.jpg" alt="Bathroom Remodeling" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Bathroom Remodeling</h3>
+                        <ul class="service__list">
+                            <li>Turn Your Bathroom into a Sanctuary</li>
+                            <li>Spa-inspired designs for modern elegance</li>
+                            <li>More Than Just Function—It's Self-Care</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+
+                <!-- Exterior and Interior Painting -->
+                <a href="painting.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Painting/painting 3.webp" alt="Painting Services" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Exterior & Interior Painting</h3>
+                        <ul class="service__list">
+                            <li>Exterior Paint Is Your Home's First Defense</li>
+                            <li>Color Shapes Harmony – The final touch</li>
+                            <li>A Good Paint Job Saves You Money</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+
+                <!-- Siding -->
+                <a href="siding.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Siding/20260205_2246_Image Generation_remix_01kgra1vyrf1msa7cbcqtk53vj.png" alt="Siding Services" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Siding</h3>
+                        <ul class="service__list">
+                            <li>More Than Just Looks—It's Protection</li>
+                            <li>Shields from wind, moisture, and pests</li>
+                            <li>Upgrade Now, Save Later – Reduce maintenance costs</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+
+                <!-- Decks -->
+                <a href="decks.html" class="service__card">
+                    <div class="service__image">
+                        <img src="arquivos/serviços fotos/Decks/deck.jpeg" alt="Deck Building" loading="lazy">
+                        <div class="service__overlay"></div>
+                    </div>
+                    <div class="service__content">
+                        <h3 class="service__title">Decks</h3>
+                        <ul class="service__list">
+                            <li>Custom-Built for Your Lifestyle</li>
+                            <li>Durability & Low Maintenance</li>
+                            <li>Seamless Indoor-Outdoor Living</li>
+                        </ul>
+                        <span class="service__link">Learn More →</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Earthwise Windows Section -->
+    <section class="earthwise section">
+        <div class="container">
+            <div class="earthwise__content">
+                <h2 class="section__title">Our Earthwise Icon Windows Guarantee Efficiency And Strength</h2>
+                
+                <div class="earthwise__grid">
+                    <div class="earthwise__feature">
+                        <div class="feature__header">
+                            <h3>Structural DP-55 Performance</h3>
+                        </div>
+                        <p>Protects against hurricane force winds up to 178 mph</p>
+                        <span class="feature__note">(DP-55 size window 40x63)</span>
+                    </div>
+
+                    <div class="earthwise__feature">
+                        <div class="feature__header">
+                            <h3>Air Seal Draft Protection</h3>
+                        </div>
+                        <p>Weatherstripping seals and protects from drafts, water, wind, dust and sounds from entering your home. Triple seals throughout the window design includes foam compression seals at head, meeting rail and sill.</p>
+                        <span class="feature__note">(0.05 CFM testing at Intertek)</span>
+                    </div>
+
+                    <div class="earthwise__feature">
+                        <div class="feature__header">
+                            <h3>Structural Fiberglass Innergy® Thermal Reinforcement</h3>
+                        </div>
+                        <p>Provides metal like stiffness without the thermal conductivity.</p>
+                    </div>
+
+                    <div class="earthwise__feature">
+                        <div class="feature__header">
+                            <h3>1-1/4" Triple Pane Insulated Low-E glass with Argon</h3>
+                        </div>
+                        <p>Our triple pane chambers come with 2 Low-E coatings and 2 Argon fills. U-value 0.18 Certified ENERGY STAR 7.0</p>
+                    </div>
+                </div>
+
+                <div class="earthwise__image">
+                    <img src="arquivos/imagem janela.png" alt="Professional tools" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta section">
+        <div class="container">
+            <div class="cta__content">
+                <h2 class="cta__title">Ready to Transform Your Home?</h2>
+                <p class="cta__description">Let's bring your vision to life. Contact us today for a free consultation.</p>
+                <a href="contact.html" class="btn btn-primary btn-large">Get Started Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__column">
+                    <h3 class="footer__logo">
+                        <img src="images/logo.avif" alt="Tigersaut Logo" class="footer__logo-color">
+                    </h3>
+                    <p class="footer__description">Expertise in home improvement and contracting services.</p>
+                    <div class="footer__social">
+                        <a href="https://www.facebook.com/profile.php?id=61572441284916" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="Facebook">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/tigersautgc/" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/tigersaut" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="LinkedIn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@tigersautgc" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="TikTok">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/@tigersautgc" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="YouTube">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.pinterest.com/tigersautgc" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="Pinterest">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://g.page/tigersaut" target="_blank" rel="noopener noreferrer" class="social__link" aria-label="Google Business">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer__column">
+                    <h4 class="footer__title">Services</h4>
+                    <ul class="footer__list">
+                        <li><a href="windows.html">Window Installation</a></li>
+                        <li><a href="roofing.html">Roofing Services</a></li>
+                        <li><a href="bathroom.html">Bathroom Remodeling</a></li>
+                        <li><a href="painting.html">Painting</a></li>
+                        <li><a href="siding.html">Siding</a></li>
+                        <li><a href="decks.html">Decks</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h4 class="footer__title">Company</h4>
+                    <ul class="footer__list">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h4 class="footer__title">Contact Info</h4>
+                    <ul class="footer__list contact-info">
+                        <li>
+                            <a href="mailto:team@tigersaut.com">team@tigersaut.com</a>
+                        </li>
+                        <li>
+                            <a href="tel:+19782061559">978-206-1559</a>
+                        </li>
+                        <li>174 Pine St, Danvers, MA 01923</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>&copy; 2025 Tigersaut General Contractors. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Call Widget -->
+    <a href="tel:+19784796827" class="floating-call" aria-label="Call us">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span class="floating-call__text">Call Now</span>
+    </a>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

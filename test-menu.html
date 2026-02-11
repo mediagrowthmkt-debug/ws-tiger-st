@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Mobile Menu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Debug styles */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .debug-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            border: 2px solid red;
+            padding: 10px;
+            z-index: 10000;
+            font-size: 12px;
+        }
+        
+        .test-content {
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="images/logo.avif" alt="Tigersaut Logo">
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html" class="nav__link active">Home</a>
+                    </li>
+                    <li class="nav__item nav__dropdown">
+                        <a href="#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
+                        <ul class="dropdown__menu">
+                            <li><a href="windows.html">Window Installation</a></li>
+                            <li><a href="roofing.html">Roofing Services</a></li>
+                            <li><a href="bathroom.html">Bathroom Remodeling</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav__item">
+                        <a href="contact.html" class="nav__link">Contact</a>
+                    </li>
+                </ul>
+                <div class="nav__menu-footer">
+                    <a href="contact.html" class="nav__menu-cta">Get Free Estimate</a>
+                </div>
+                <div class="nav__close" id="nav-close">✕</div>
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">☰</div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="nav__overlay" id="nav-overlay"></div>
+
+    <div class="test-content">
+        <h1>Test Mobile Menu</h1>
+        <p>Click the hamburger icon to open the menu</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+
+    <div class="debug-info" id="debug-info">
+        Debug Info: Waiting...
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Debug script
+        const debugInfo = document.getElementById('debug-info');
+        const updateDebug = () => {
+            const menu = document.getElementById('nav-menu');
+            const overlay = document.getElementById('nav-overlay');
+            debugInfo.innerHTML = `
+                Menu classes: ${menu.className}<br>
+                Overlay classes: ${overlay.className}<br>
+                Body classes: ${document.body.className}<br>
+                Window width: ${window.innerWidth}px
+            `;
+        };
+        
+        setInterval(updateDebug, 500);
+        
+        // Log all clicks
+        document.addEventListener('click', (e) => {
+            console.log('Click on:', e.target);
+        });
+    </script>
+</body>
+</html>
