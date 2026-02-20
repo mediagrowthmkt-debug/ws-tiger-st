@@ -1,17 +1,22 @@
 # Enable URL Rewriting
 RewriteEngine On
-
-# Remove .html extension from URLs
-# If the requested file is not a directory
-RewriteCond %{REQUEST_FILENAME} !-d
-# And is not a file
-RewriteCond %{REQUEST_FILENAME}\.html -f
-# Then rewrite to add .html extension
-RewriteRule ^([^/]+)$ $1.html [L]
-
-# Redirect old .html URLs to clean URLs (301 permanent redirect)
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
-RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+RewriteBase /
 
 # Set default DirectoryIndex
 DirectoryIndex index.html
+
+# Redirect old .html URLs to clean URLs (301 permanent redirect)
+RewriteCond %{THE_REQUEST} \s/+(.*?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+# Add .html extension internally when accessing clean URLs
+# Skip if the file or directory already exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Ensure CSS, JS, and images are served correctly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} \.(css|js|jpg|jpeg|png|gif|svg|webp|avif|ico|pdf|woff|woff2|ttf|eot)$ [NC]
+RewriteRule ^ - [L]
