@@ -1,0 +1,17 @@
+# Enable URL Rewriting
+RewriteEngine On
+
+# Remove .html extension from URLs
+# If the requested file is not a directory
+RewriteCond %{REQUEST_FILENAME} !-d
+# And is not a file
+RewriteCond %{REQUEST_FILENAME}\.html -f
+# Then rewrite to add .html extension
+RewriteRule ^([^/]+)$ $1.html [L]
+
+# Redirect old .html URLs to clean URLs (301 permanent redirect)
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+
+# Set default DirectoryIndex
+DirectoryIndex index.html
