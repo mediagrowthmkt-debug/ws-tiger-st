@@ -842,3 +842,76 @@ body {
         max-width: 100%;
     }
 }
+
+/* =====================================================
+   FLOATING CALL WIDGET
+   ===================================================== */
+.floating-call {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #ffcd35, #D41F0A);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(166, 22, 2, 0.4);
+    z-index: 998;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.floating-call:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 30px rgba(166, 22, 2, 0.5);
+}
+
+.floating-call svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    animation: phoneRing 2s ease-in-out infinite;
+}
+
+.floating-call__text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+@keyframes phoneRing {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    10%, 30% {
+        transform: rotate(-10deg);
+    }
+    20%, 40% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Mobile - Icon only */
+@media screen and (max-width: 768px) {
+    .floating-call {
+        bottom: 20px;
+        right: 20px;
+        padding: 16px;
+        border-radius: 50%;
+    }
+    
+    .floating-call__text {
+        display: none;
+    }
+    
+    .floating-call svg {
+        width: 28px;
+        height: 28px;
+    }
+}
