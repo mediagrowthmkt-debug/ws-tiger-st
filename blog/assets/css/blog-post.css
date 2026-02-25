@@ -146,7 +146,7 @@ body {
    ===================================================== */
 .blog-post {
     max-width: 900px;
-    margin: 60px auto;
+    margin: 120px auto 60px;
     padding: 0 30px;
 }
 
@@ -726,7 +726,7 @@ body {
 @media (max-width: 768px) {
     .blog-post {
         padding: 0 20px;
-        margin: 40px auto;
+        margin: 100px auto 40px;
     }
 
     .post-title {
