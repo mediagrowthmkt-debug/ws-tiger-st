@@ -1,0 +1,22 @@
+.
+ ESTRUTURA-BLOG.txt
+ GUIA-RAPIDO-TIGERSAUT.md
+ IMPLEMENTACAO-COMPLETA.md
+ README.md
+ _config.yml
+ assets
+  css
+   blog-index.css
+   blog-post.css
+   form-style.css
+  images
+  js
+   blog-index.js
+   blog-post.js
+ index.html
+ postin.html
+ posts
+  5-signs-you-need-window-replacement.html
+  index.html
+ scripts
+  github-api.js

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Test - Tigersaut</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 { color: #A61602; }
+        .status { 
+            padding: 10px; 
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        .post-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #A61602;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #8b1202; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Blog Test - Tigersaut</h1>
+        
+        <div class="status info">
+            <strong>Status:</strong> <span id="status">Carregando...</span>
+        </div>
+        
+        <button onclick="testLoad()">🔄 Recarregar Posts</button>
+        <button onclick="showConsole()">📋 Ver Console</button>
+        <button onclick="clearLogs()">🗑️ Limpar Logs</button>
+        
+        <h2>Logs:</h2>
+        <div id="logs" style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 12px;"></div>
+        
+        <h2>Posts Encontrados (<span id="postCount">0</span>):</h2>
+        <div id="postsContainer"></div>
+    </div>
+
+    <script>
+        let logs = [];
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push(`[${timestamp}] ${message}`);
+            updateLogsDisplay();
+        }
+        
+        function updateLogsDisplay() {
+            document.getElementById('logs').innerHTML = logs.join('<br>');
+        }
+        
+        function clearLogs() {
+            logs = [];
+            updateLogsDisplay();
+        }
+        
+        function showConsole() {
+            alert('Abra o Console do navegador (F12) para ver mais detalhes');
+        }
+        
+        async function testLoad() {
+            try {
+                log('🚀 Iniciando teste...', 'info');
+                document.getElementById('status').textContent = 'Testando...';
+                
+                // Detectar ambiente
+                const isLocal = window.location.protocol === 'file:';
+                log(`🌍 Ambiente: ${isLocal ? 'LOCAL (file://)' : 'WEB SERVER'}`, 'info');
+                
+                // Posts hardcoded
+                const posts = [
+                    {
+                        title: '5 Signs You Need Window Replacement',
+                        excerpt: 'Learn the top 5 signs that indicate it\'s time to replace your home\'s windows and improve energy efficiency.',
+                        image: '../arquivos/serviços fotos/Window Installation/window.webp',
+                        category: 'Home Improvement',
+                        author: 'Tigersaut Team',
+                        date: '2025-02-25',
+                        url: 'posts/5-signs-you-need-window-replacement.html'
+                    }
+                ];
+                
+                log(`✅ Posts carregados: ${posts.length}`, 'success');
+                document.getElementById('postCount').textContent = posts.length;
+                
+                // Renderizar posts
+                const container = document.getElementById('postsContainer');
+                container.innerHTML = posts.map(post => `
+                    <div class="post-card">
+                        <h3 style="color: #A61602;">${post.title}</h3>
+                        <p><strong>Categoria:</strong> ${post.category}</p>
+                        <p><strong>Autor:</strong> ${post.author}</p>
+                        <p><strong>Data:</strong> ${post.date}</p>
+                        <p>${post.excerpt}</p>
+                        <a href="${post.url}" style="color: #A61602;">Ver Post →</a>
+                    </div>
+                `).join('');
+                
+                document.getElementById('status').textContent = 'Teste concluído com sucesso! ✅';
+                log('✅ Teste concluído!', 'success');
+                
+            } catch (error) {
+                log(`❌ ERRO: ${error.message}`, 'error');
+                document.getElementById('status').textContent = 'Erro no teste ❌';
+                console.error('Erro:', error);
+            }
+        }
+        
+        // Executar ao carregar
+        window.addEventListener('DOMContentLoaded', testLoad);
+    </script>
+</body>
+</html>
