@@ -67,21 +67,11 @@ async function loadPosts() {
         console.log('🚀 Carregando posts...');
         
         let htmlFiles = [];
-        let localPosts = [];
         let githubPosts = [];
         
-        // 1. Tentar carregar posts locais primeiro
+        // 1. PRIORIDADE: Tentar carregar posts do GitHub
         try {
-            console.log('📂 Tentando carregar posts locais...');
-            localPosts = await loadLocalPosts();
-            console.log('✅ Posts locais encontrados:', localPosts.length);
-        } catch (error) {
-            console.log('⚠️ Não foi possível carregar posts locais:', error.message);
-        }
-        
-        // 2. Tentar carregar posts do GitHub
-        try {
-            console.log('🌐 Tentando carregar posts do GitHub...');
+            console.log('🌐 Carregando posts do GitHub...');
             const response = await fetch('https://api.github.com/repos/mediagrowthmkt-debug/ws-tiger-st/contents/blog/posts');
             
             if (response.ok) {
@@ -108,30 +98,23 @@ async function loadPosts() {
                 console.log('✅ Posts GitHub carregados:', githubPosts.length);
             } else {
                 console.warn('⚠️ GitHub API retornou:', response.status);
+                throw new Error('GitHub API error');
             }
         } catch (error) {
             console.warn('⚠️ Erro ao carregar do GitHub:', error.message);
+            console.log('📂 Tentando carregar posts locais como fallback...');
+            
+            // 2. FALLBACK: Carregar posts locais se GitHub falhar
+            const localPosts = await loadLocalPosts();
+            githubPosts = localPosts;
         }
         
-        // 3. Combinar posts locais e do GitHub (remover duplicatas)
-        const combinedPosts = [...localPosts];
-        const localSlugs = new Set(localPosts.map(p => p.slug));
-        
-        for (const githubPost of githubPosts) {
-            if (!localSlugs.has(githubPost.slug)) {
-                combinedPosts.push(githubPost);
-            }
-        }
-        
-        allPosts = combinedPosts;
+        allPosts = githubPosts;
         
         // Sort by date (newest first)
         allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
         
         console.log('📚 Total de posts carregados:', allPosts.length);
-        console.log('  - Locais:', localPosts.length);
-        console.log('  - GitHub:', githubPosts.length);
-        console.log('  - Únicos:', allPosts.length);
         
         // Se não encontrou nenhum post, usa exemplos
         if (allPosts.length === 0) {
@@ -145,12 +128,16 @@ async function loadPosts() {
     }
 }
 
-// Nova função para carregar posts locais
+// Função para carregar posts locais (FALLBACK quando GitHub não está disponível)
 async function loadLocalPosts() {
+    console.log('📂 Carregando posts locais como fallback...');
+    
+    // Lista de posts conhecidos localmente
     const localFiles = [
         '5-signs-you-need-window-replacement.html',
-        'marble-or-granite-guide-for-your-home-in-worcester.html'
-        // Adicione aqui manualmente novos posts ou use um sistema de descoberta
+        'marble-or-granite-guide-for-your-home-in-worcester.html',
+        'kitchen-island-ideas-555-countertops-guide.html',
+        'kitchen-island-ideas-granite-countertops-guide.html'
     ];
     
     const posts = [];
@@ -165,14 +152,15 @@ async function loadLocalPosts() {
                 const post = await loadPostMetadata(url, fileName);
                 if (post) {
                     posts.push(post);
-                    console.log(`  ✅ Carregado: ${fileName}`);
+                    console.log(`  ✅ Carregado localmente: ${fileName}`);
                 }
             }
         } catch (error) {
-            console.log(`  ⚠️ Não encontrado localmente: ${fileName}`);
+            // Silencioso - arquivo não existe localmente
         }
     }
     
+    console.log(`📦 Total de posts locais encontrados: ${posts.length}`);
     return posts;
 }
 
