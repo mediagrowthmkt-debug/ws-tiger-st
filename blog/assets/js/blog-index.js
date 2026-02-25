@@ -64,66 +64,42 @@ async function initBlog() {
 
 async function loadPosts() {
     try {
-        // Detectar se está rodando localmente ou no GitHub Pages
-        const isLocal = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' ||
-                       window.location.protocol === 'file:';
-        
-        console.log('🌍 Ambiente:', isLocal ? 'LOCAL' : 'GITHUB PAGES');
+        console.log('🚀 Carregando posts do GitHub...');
         
         let htmlFiles = [];
         
-        if (isLocal) {
-            // Modo LOCAL - Posts hardcoded para evitar problemas de CORS
-            console.log('📁 Modo LOCAL - Carregando posts diretos');
-            
-            allPosts = [
-                {
-                    title: '5 Signs You Need Window Replacement',
-                    excerpt: 'Learn the top 5 signs that indicate it\'s time to replace your home\'s windows and improve energy efficiency.',
-                    image: '../arquivos/serviços fotos/Window Installation/window.webp',
-                    category: 'Home Improvement',
-                    author: 'Tigersaut Team',
-                    date: '2025-02-25',
-                    url: 'posts/5-signs-you-need-window-replacement.html'
-                }
-            ];
-            
-            console.log('✅ Posts locais carregados:', allPosts.length);
-            return; // Sai da função
-        } else {
-            // Modo GITHUB PAGES - Busca via API
-            const response = await fetch('https://api.github.com/repos/mediagrowthmkt-debug/blog-template-md/contents/posts');
-            
-            if (!response.ok) {
-                throw new Error('Erro ao buscar posts da API');
-            }
-            
-            const files = await response.json();
-            console.log('📁 Arquivos da API:', files.length);
-            
-            // Filtrar apenas arquivos HTML (excluir README.md e index.html)
-            htmlFiles = files.filter(file => 
-                file.name.endsWith('.html') && 
-                file.name !== 'index.html' &&
-                file.type === 'file'
-            ).map(file => ({ name: file.name }));
-            
-            console.log('✅ Posts encontrados:', htmlFiles.length);
-            
-            // Carregar metadados de cada post
-            const postPromises = htmlFiles.map(file => 
-                loadPostMetadata(`posts/${file.name}`)
-            );
-            
-            allPosts = await Promise.all(postPromises);
-            allPosts = allPosts.filter(post => post !== null);
+        // Sempre busca do GitHub API (funciona local e online)
+        const response = await fetch('https://api.github.com/repos/mediagrowthmkt-debug/ws-tiger-st/contents/blog/posts');
+        
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
         }
+        
+        const files = await response.json();
+        console.log('📁 Arquivos encontrados no GitHub:', files.length);
+        
+        // Filtrar apenas arquivos HTML (excluir README.md e index.html)
+        htmlFiles = files.filter(file => 
+            file.name.endsWith('.html') && 
+            file.name !== 'index.html' &&
+            file.type === 'file'
+        );
+        
+        console.log('✅ Posts HTML encontrados:', htmlFiles.length);
+        console.log('📝 Lista de posts:', htmlFiles.map(f => f.name));
+        
+        // Carregar metadados de cada post do GitHub Raw
+        const postPromises = htmlFiles.map(file => 
+            loadPostMetadata(file.download_url, file.name)
+        );
+        
+        allPosts = await Promise.all(postPromises);
+        allPosts = allPosts.filter(post => post !== null);
         
         // Sort by date (newest first)
         allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        console.log('📚 Total de posts carregados:', allPosts.length);
+        console.log('📚 Total de posts carregados com metadados:', allPosts.length);
         
     } catch (error) {
         console.error('❌ Erro ao carregar posts:', error);
@@ -132,24 +108,48 @@ async function loadPosts() {
     }
 }
 
-async function loadPostMetadata(url) {
+async function loadPostMetadata(downloadUrl, fileName) {
     try {
-        const response = await fetch(url);
+        console.log('📥 Carregando post:', fileName);
+        
+        const response = await fetch(downloadUrl);
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar: ${response.status}`);
+        }
+        
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         
         // Extract metadata from post
-        const title = doc.querySelector('h1')?.textContent || doc.querySelector('title')?.textContent || 'Post sem título';
+        const title = doc.querySelector('h1')?.textContent || 
+                     doc.querySelector('meta[property="og:title"]')?.content ||
+                     doc.querySelector('title')?.textContent || 
+                     'Post sem título';
+                     
         const description = doc.querySelector('meta[name="description"]')?.content || 
-                          doc.querySelector('p')?.textContent.substring(0, 150) || '';
+                          doc.querySelector('meta[property="og:description"]')?.content ||
+                          doc.querySelector('p')?.textContent?.substring(0, 150) || '';
+                          
         const image = doc.querySelector('meta[property="og:image"]')?.content || 
-                     doc.querySelector('img')?.src || '';
-        const category = doc.querySelector('meta[name="category"]')?.content || 'Geral';
-        const author = doc.querySelector('meta[name="author"]')?.content || 'MediaGrowth';
+                     doc.querySelector('.hero-image img')?.src ||
+                     doc.querySelector('img')?.src || 
+                     '../arquivos/serviços fotos/Window Installation/window.webp';
+                     
+        const category = doc.querySelector('meta[name="category"]')?.content || 
+                        doc.querySelector('meta[property="article:section"]')?.content ||
+                        'Home Improvement';
+                        
+        const author = doc.querySelector('meta[name="author"]')?.content || 
+                      doc.querySelector('.author')?.textContent ||
+                      'Tigersaut Team';
+                      
         const dateStr = doc.querySelector('meta[name="publish-date"]')?.content || 
+                       doc.querySelector('meta[property="article:published_time"]')?.content ||
                        doc.querySelector('time')?.getAttribute('datetime') || 
                        new Date().toISOString();
+        
+        console.log('✅ Post carregado:', title);
         
         return {
             title: title.trim(),
@@ -158,10 +158,10 @@ async function loadPostMetadata(url) {
             category: category.trim(),
             author: author.trim(),
             date: dateStr,
-            url: url
+            url: `posts/${fileName}`
         };
     } catch (error) {
-        console.error('Erro ao carregar post:', url, error);
+        console.error('❌ Erro ao carregar post:', fileName, error);
         return null;
     }
 }

@@ -267,11 +267,21 @@ Palavra-chave Principal: sua palavra-chave
                         URL da Imagem de Capa
                         <span class="tooltip">1200x630px - Nome do arquivo com keyword</span>
                     </label>
-                    <input type="url" 
-                           id="coverImage" 
-                           name="coverImage" 
-                           required
-                           placeholder="https://exemplo.com/instalacao-granito-cozinha.jpg">
+                    <div style="display: flex; gap: 10px; align-items: stretch;">
+                        <input type="url" 
+                               id="coverImage" 
+                               name="coverImage" 
+                               required
+                               placeholder="https://exemplo.com/instalacao-granito-cozinha.jpg"
+                               style="flex: 1;">
+                        <button type="button" 
+                                class="btn-upload" 
+                                onclick="handleImageUpload('coverImage')"
+                                title="Upload de imagem para GitHub">
+                            📤 Upload
+                        </button>
+                    </div>
+                    <small class="field-info" id="coverImage-status" style="color: #666; display: none;"></small>
                 </div>
 
                 <div class="form-group required">
@@ -297,17 +307,30 @@ Palavra-chave Principal: sua palavra-chave
                 <div class="form-group">
                     <label>
                         Imagens Internas (mínimo 2)
-                        <span class="tooltip">Cada uma com URL e Alt Text</span>
+                        <span class="tooltip">Cada uma com URL e Alt Text | Use 📤 Upload para enviar ao GitHub</span>
                     </label>
                     <div id="internalImagesContainer">
-                        <div class="internal-image-item">
-                            <input type="url" 
-                                   name="internalImageUrl[]" 
-                                   placeholder="URL da imagem">
-                            <input type="text" 
-                                   name="internalImageAlt[]" 
-                                   placeholder="Alt text descritivo">
-                            <button type="button" class="btn-remove">✕</button>
+                        <div class="internal-image-item" style="display: flex; gap: 10px; margin-bottom: 15px; align-items: start;">
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="url" 
+                                           name="internalImageUrl[]" 
+                                           placeholder="URL da imagem"
+                                           style="flex: 1;">
+                                    <button type="button" 
+                                            class="btn-upload btn-upload-internal" 
+                                            onclick="handleInternalImageUpload(this)"
+                                            title="Upload para GitHub">
+                                        📤 Upload
+                                    </button>
+                                </div>
+                                <input type="text" 
+                                       name="internalImageAlt[]" 
+                                       placeholder="Alt text descritivo"
+                                       style="width: 100%;">
+                                <small class="field-info upload-status-internal" style="display: none;"></small>
+                            </div>
+                            <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
                         </div>
                     </div>
                     <button type="button" id="addInternalImage" class="btn-secondary">+ Adicionar Imagem</button>
@@ -890,6 +913,260 @@ Habilitar botões de compartilhamento? [Sim/Não]:</textarea>
             </div>
         </div>
     </div>
+
+    <style>
+        /* Estilos para botão de upload */
+        .btn-upload {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-upload:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Input file oculto */
+        .upload-input {
+            display: none;
+        }
+        
+        /* Status do upload */
+        .upload-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .upload-status.loading {
+            color: #667eea;
+        }
+        
+        .upload-status.success {
+            color: #28a745;
+        }
+        
+        .upload-status.error {
+            color: #dc3545;
+        }
+    </style>
+
+    <script>
+        /**
+         * Sistema de Upload de Imagens para GitHub
+         */
+        
+        // Criar inputs file ocultos para cada campo de imagem
+        function initImageUploadSystem() {
+            // Input para imagem de capa
+            const coverInput = document.createElement('input');
+            coverInput.type = 'file';
+            coverInput.accept = 'image/jpeg,image/jpg,image/png,image/webp,image/avif,image/gif';
+            coverInput.className = 'upload-input';
+            coverInput.id = 'coverImageFile';
+            document.body.appendChild(coverInput);
+        }
+        
+        // Inicializar quando DOM carregar
+        document.addEventListener('DOMContentLoaded', initImageUploadSystem);
+        
+        /**
+         * Handler para upload de imagem
+         */
+        async function handleImageUpload(fieldId) {
+            // Verificar se token GitHub está configurado
+            const token = localStorage.getItem('github_token');
+            if (!token) {
+                alert('⚠️ Configure o GitHub token primeiro!\n\nClique em "⚙️ Configurar GitHub" no topo da página.');
+                return;
+            }
+            
+            // Criar input file temporário
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/jpeg,image/jpg,image/png,image/webp,image/avif,image/gif';
+            
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const statusEl = document.getElementById(`${fieldId}-status`);
+                const urlField = document.getElementById(fieldId);
+                const uploadBtn = event.target;
+                
+                try {
+                    // Mostrar loading
+                    uploadBtn.disabled = true;
+                    uploadBtn.textContent = '⏳ Uploading...';
+                    
+                    if (statusEl) {
+                        statusEl.style.display = 'block';
+                        statusEl.className = 'field-info upload-status loading';
+                        statusEl.textContent = `📤 Uploading ${file.name}...`;
+                    }
+                    
+                    // Fazer upload via GitHub API
+                    const imageUrl = await uploadImageToGitHub(file, 'arquivos/blog');
+                    
+                    // Preencher campo com URL
+                    urlField.value = imageUrl;
+                    urlField.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Mostrar sucesso
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status success';
+                        statusEl.textContent = `✅ Upload completo! ${(file.size / 1024).toFixed(1)}KB`;
+                    }
+                    
+                    uploadBtn.textContent = '✅ Sucesso';
+                    setTimeout(() => {
+                        uploadBtn.textContent = '📤 Upload';
+                        uploadBtn.disabled = false;
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Erro no upload:', error);
+                    
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status error';
+                        statusEl.textContent = `❌ Erro: ${error.message}`;
+                    }
+                    
+                    alert(`❌ Erro ao fazer upload:\n\n${error.message}`);
+                    
+                    uploadBtn.textContent = '📤 Upload';
+                    uploadBtn.disabled = false;
+                }
+            };
+            
+            // Trigger file selection
+            input.click();
+        }
+        
+        /**
+         * Handler para upload de imagens internas
+         */
+        async function handleInternalImageUpload(button) {
+            // Verificar se token GitHub está configurado
+            const token = localStorage.getItem('github_token');
+            if (!token) {
+                alert('⚠️ Configure o GitHub token primeiro!\n\nClique em "⚙️ Configurar GitHub" no topo da página.');
+                return;
+            }
+            
+            // Criar input file temporário
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/jpeg,image/jpg,image/png,image/webp,image/avif,image/gif';
+            
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const container = button.closest('.internal-image-item');
+                const urlField = container.querySelector('input[name="internalImageUrl[]"]');
+                const statusEl = container.querySelector('.upload-status-internal');
+                
+                try {
+                    // Mostrar loading
+                    button.disabled = true;
+                    button.textContent = '⏳ Uploading...';
+                    
+                    if (statusEl) {
+                        statusEl.style.display = 'block';
+                        statusEl.className = 'field-info upload-status-internal loading';
+                        statusEl.textContent = `📤 Uploading ${file.name}...`;
+                    }
+                    
+                    // Fazer upload via GitHub API
+                    const imageUrl = await uploadImageToGitHub(file, 'arquivos/blog');
+                    
+                    // Preencher campo com URL
+                    urlField.value = imageUrl;
+                    urlField.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Mostrar sucesso
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status-internal success';
+                        statusEl.textContent = `✅ Upload completo! ${(file.size / 1024).toFixed(1)}KB`;
+                    }
+                    
+                    button.textContent = '✅ Sucesso';
+                    setTimeout(() => {
+                        button.textContent = '📤 Upload';
+                        button.disabled = false;
+                    }, 2000);
+                    
+                } catch (error) {
+                    console.error('Erro no upload:', error);
+                    
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status-internal error';
+                        statusEl.textContent = `❌ Erro: ${error.message}`;
+                    }
+                    
+                    alert(`❌ Erro ao fazer upload:\n\n${error.message}`);
+                    
+                    button.textContent = '📤 Upload';
+                    button.disabled = false;
+                }
+            };
+            
+            // Trigger file selection
+            input.click();
+        }
+        
+        /**
+         * Adicionar nova imagem interna
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('addInternalImage')?.addEventListener('click', function() {
+                const container = document.getElementById('internalImagesContainer');
+                const newItem = document.createElement('div');
+                newItem.className = 'internal-image-item';
+                newItem.style.cssText = 'display: flex; gap: 10px; margin-bottom: 15px; align-items: start;';
+                newItem.innerHTML = `
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; gap: 10px;">
+                            <input type="url" 
+                                   name="internalImageUrl[]" 
+                                   placeholder="URL da imagem"
+                                   style="flex: 1;">
+                            <button type="button" 
+                                    class="btn-upload btn-upload-internal" 
+                                    onclick="handleInternalImageUpload(this)"
+                                    title="Upload para GitHub">
+                                📤 Upload
+                            </button>
+                        </div>
+                        <input type="text" 
+                               name="internalImageAlt[]" 
+                               placeholder="Alt text descritivo"
+                               style="width: 100%;">
+                        <small class="field-info upload-status-internal" style="display: none;"></small>
+                    </div>
+                    <button type="button" class="btn-remove" onclick="this.parentElement.remove()">✕</button>
+                `;
+                container.appendChild(newItem);
+            });
+        });
+    </script>
 
     <script src="assets/js/form-script.js?v=1771364111"></script>
 </body>

@@ -15,22 +15,28 @@ class GitHubBlogPublisher {
      * Salvar post no GitHub
      */
     async savePost(slug, htmlContent) {
-        const path = `posts/${slug}.html`;
+        const path = `blog/posts/${slug}.html`;
         const message = `Add new blog post: ${slug}`;
         
         try {
+            console.log('📤 Salvando post no GitHub...');
+            console.log('📍 Path:', path);
+            console.log('📦 Repo:', `${this.owner}/${this.repo}`);
+            
             // Verificar se arquivo já existe
             const existingFile = await this.getFile(path);
             
             if (existingFile) {
                 // Atualizar arquivo existente
+                console.log('📝 Arquivo existe, atualizando...');
                 return await this.updateFile(path, htmlContent, message, existingFile.sha);
             } else {
                 // Criar novo arquivo
+                console.log('✨ Criando novo arquivo...');
                 return await this.createFile(path, htmlContent, message);
             }
         } catch (error) {
-            console.error('Erro ao salvar no GitHub:', error);
+            console.error('❌ Erro ao salvar no GitHub:', error);
             throw error;
         }
     }
@@ -128,8 +134,9 @@ class GitHubBlogPublisher {
      * Obter URL pública do post
      */
     getPublicUrl(slug) {
-        // GitHub Pages URL dinâmica baseada no repositório
-        return `https://${this.owner}.github.io/${this.repo}/posts/${slug}.html`;
+        // GitHub Pages URL para o repositório ws-tiger-st
+        // Posts ficam em blog/posts/ na raiz do repositório
+        return `https://${this.owner}.github.io/${this.repo}/blog/posts/${slug}.html`;
     }
 }
 
@@ -152,7 +159,7 @@ function initGitHubPublisher() {
     // Detecta automaticamente owner e repo do repositório atual
     return new GitHubBlogPublisher({
         owner: 'mediagrowthmkt-debug',
-        repo: 'blog-template-md',
+        repo: 'ws-tiger-st',
         token: token,
         branch: 'main'
     });
@@ -233,9 +240,92 @@ async function publishPost(slug, htmlContent) {
     }
 }
 
+/**
+ * Upload de imagem para o GitHub
+ * @param {File} file - Arquivo de imagem
+ * @param {string} folder - Pasta de destino (ex: 'blog/images' ou 'arquivos/blog')
+ * @returns {Promise<string>} - URL da imagem no GitHub
+ */
+async function uploadImageToGitHub(file, folder = 'arquivos/blog') {
+    const publisher = initGitHubPublisher();
+    
+    if (!publisher) {
+        throw new Error('GitHub token não configurado. Configure em ⚙️ Configurar GitHub.');
+    }
+    
+    // Validar tipo de arquivo
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif', 'image/gif'];
+    if (!validTypes.includes(file.type)) {
+        throw new Error('Tipo de arquivo inválido. Use: JPG, PNG, WEBP, AVIF ou GIF');
+    }
+    
+    // Validar tamanho (máx 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        throw new Error('Arquivo muito grande. Tamanho máximo: 5MB');
+    }
+    
+    try {
+        // Gerar nome único para evitar conflitos
+        const timestamp = Date.now();
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '-').toLowerCase();
+        const fileName = `${timestamp}-${safeName}`;
+        const path = `${folder}/${fileName}`;
+        
+        console.log('📤 Uploading image:', fileName);
+        
+        // Ler arquivo como base64
+        const base64Content = await fileToBase64(file);
+        
+        // Fazer upload via GitHub API
+        const url = `https://api.github.com/repos/${publisher.owner}/${publisher.repo}/contents/${path}`;
+        
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: publisher.getHeaders(),
+            body: JSON.stringify({
+                message: `Upload image: ${fileName}`,
+                content: base64Content.split(',')[1], // Remove data:image/xxx;base64,
+                branch: publisher.branch
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(`GitHub API error: ${error.message}`);
+        }
+        
+        const result = await response.json();
+        
+        // Retornar URL pública da imagem
+        const imageUrl = `https://raw.githubusercontent.com/${publisher.owner}/${publisher.repo}/${publisher.branch}/${path}`;
+        
+        console.log('✅ Image uploaded:', imageUrl);
+        
+        return imageUrl;
+        
+    } catch (error) {
+        console.error('❌ Erro ao fazer upload:', error);
+        throw error;
+    }
+}
+
+/**
+ * Converter File para Base64
+ */
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 // Exportar para uso global
 window.GitHubBlogPublisher = GitHubBlogPublisher;
 window.initGitHubPublisher = initGitHubPublisher;
 window.saveGitHubToken = saveGitHubToken;
 window.testGitHubConnection = testGitHubConnection;
 window.publishPost = publishPost;
+window.uploadImageToGitHub = uploadImageToGitHub;
