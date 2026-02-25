@@ -915,3 +915,118 @@ body {
         height: 28px;
     }
 }
+
+/* =====================================================
+   TIGERSAUT COLORS - Override para usar cores do site
+   ===================================================== */
+/* Variáveis de cor Tigersaut */
+:root {
+    --tigersaut-primary: #A61602;
+    --tigersaut-secondary: #ffcd35;
+    --tigersaut-text: #1A1A1A;
+    --tigersaut-text-light: #727586;
+    --tigersaut-bg: #ffffff;
+    --tigersaut-footer: #1A1A1A;
+}
+
+/* Fundo geral branco */
+html, body {
+    background: var(--tigersaut-bg) !important;
+    color: var(--tigersaut-text) !important;
+}
+
+/* Títulos principais */
+h1, h2 {
+    color: var(--tigersaut-primary) !important;
+}
+
+/* Outros títulos */
+h3, h4, h5, h6 {
+    color: var(--tigersaut-text) !important;
+}
+
+/* Parágrafos e listas */
+p, li, span {
+    color: var(--tigersaut-text) !important;
+}
+
+/* Links */
+a {
+    color: var(--tigersaut-primary) !important;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--tigersaut-secondary) !important;
+}
+
+/* Badge de categoria */
+.category-badge {
+    background: var(--tigersaut-primary) !important;
+    color: #ffffff !important;
+}
+
+/* Informações meta */
+.post-meta,
+.meta-item,
+.author-name,
+.publish-date {
+    color: var(--tigersaut-text-light) !important;
+}
+
+/* Footer com fundo escuro Tigersaut */
+.footer {
+    background: var(--tigersaut-footer) !important;
+    color: #ffffff !important;
+}
+
+.footer h4,
+.footer p,
+.footer li,
+.footer a {
+    color: #ffffff !important;
+}
+
+.footer a:hover {
+    color: var(--tigersaut-secondary) !important;
+}
+
+.footer__bottom {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Header com transparência sobre branco */
+.header {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-bottom: 1px solid rgba(166, 22, 2, 0.1);
+}
+
+.nav__link {
+    color: var(--tigersaut-text) !important;
+}
+
+.nav__link:hover,
+.nav__link.active {
+    color: var(--tigersaut-primary) !important;
+}
+
+/* Botão voltar ao topo */
+.back-to-top {
+    background: var(--tigersaut-primary) !important;
+    color: #ffffff !important;
+}
+
+.back-to-top:hover {
+    background: var(--tigersaut-secondary) !important;
+    color: var(--tigersaut-text) !important;
+}
+
+/* Remove fundos escuros de qualquer elemento */
+.blog-post,
+.post-header,
+.post-content,
+.post-intro,
+.content,
+article {
+    background: var(--tigersaut-bg) !important;
+}
