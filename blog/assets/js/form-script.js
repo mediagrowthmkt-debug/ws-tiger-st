@@ -1327,38 +1327,38 @@ function generateFullPreviewPage(data) {
     <!-- HEADER -->
     <header class="header" id="header">
         <nav class="nav container">
-            <a href="/" class="nav__logo">
-                <img src="../images/logo.avif" alt="Tigersaut Logo">
+            <a href="../../index.html" class="nav__logo">
+                <img src="../../images/logo.avif" alt="Tigersaut Logo">
             </a>
 
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="/" class="nav__link">Home</a>
+                        <a href="../../index.html" class="nav__link">Home</a>
                     </li>
                     <li class="nav__item nav__dropdown">
-                        <a href="/#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
+                        <a href="../../index.html#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
                         <ul class="dropdown__menu">
-                            <li><a href="/windows">Window Installation</a></li>
-                            <li><a href="/roofing">Roofing Services</a></li>
-                            <li><a href="/bathroom">Bathroom Remodeling</a></li>
-                            <li><a href="/painting">Painting</a></li>
-                            <li><a href="/siding">Siding</a></li>
-                            <li><a href="/decks">Decks</a></li>
+                            <li><a href="../../windows.html">Window Installation</a></li>
+                            <li><a href="../../roofing.html">Roofing Services</a></li>
+                            <li><a href="../../bathroom.html">Bathroom Remodeling</a></li>
+                            <li><a href="../../painting.html">Painting</a></li>
+                            <li><a href="../../siding.html">Siding</a></li>
+                            <li><a href="../../decks.html">Decks</a></li>
                         </ul>
                     </li>
                     <li class="nav__item">
-                        <a href="/gallery" class="nav__link">Gallery</a>
+                        <a href="../../gallery.html" class="nav__link">Gallery</a>
                     </li>
                     <li class="nav__item">
                         <a href="../blog/index.html" class="nav__link active">Blog</a>
                     </li>
                     <li class="nav__item">
-                        <a href="/contact" class="nav__link">Contact</a>
+                        <a href="../../contact.html" class="nav__link">Contact</a>
                     </li>
                 </ul>
                 <div class="nav__menu-footer">
-                    <a href="/contact" class="nav__menu-cta">Get Free Estimate</a>
+                    <a href="../../contact.html" class="nav__menu-cta">Get Free Estimate</a>
                     <a href="tel:+19784796827" class="nav__menu-phone">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -1453,7 +1453,7 @@ function generateFullPreviewPage(data) {
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__column footer__brand">
-                    <img src="../images/logo.avif" alt="Tigersaut Logo" class="footer__logo">
+                    <img src="../../images/logo.avif" alt="Tigersaut Logo" class="footer__logo">
                     <p class="footer__tagline">Transform Your Home with Tigersaut</p>
                     <p class="footer__description">Adding that final touch that brings harmony to your place</p>
                     <div class="footer__social">
@@ -1469,22 +1469,22 @@ function generateFullPreviewPage(data) {
                 <div class="footer__column">
                     <h4 class="footer__title">Services</h4>
                     <ul class="footer__list">
-                        <li><a href="/windows">Window Installation</a></li>
-                        <li><a href="/roofing">Roofing Services</a></li>
-                        <li><a href="/bathroom">Bathroom Remodeling</a></li>
-                        <li><a href="/painting">Painting</a></li>
-                        <li><a href="/siding">Siding</a></li>
-                        <li><a href="/decks">Decks</a></li>
+                        <li><a href="../../windows.html">Window Installation</a></li>
+                        <li><a href="../../roofing.html">Roofing Services</a></li>
+                        <li><a href="../../bathroom.html">Bathroom Remodeling</a></li>
+                        <li><a href="../../painting.html">Painting</a></li>
+                        <li><a href="../../siding.html">Siding</a></li>
+                        <li><a href="../../decks.html">Decks</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__column">
                     <h4 class="footer__title">Company</h4>
                     <ul class="footer__list">
-                        <li><a href="/">Home</a></li>
+                        <li><a href="../../index.html">Home</a></li>
                         <li><a href="../blog/index.html">Blog</a></li>
-                        <li><a href="/gallery">Gallery</a></li>
-                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="../../gallery.html">Gallery</a></li>
+                        <li><a href="../../contact.html">Contact</a></li>
                     </ul>
                 </div>
 
@@ -1568,9 +1568,14 @@ async function savePostToServer(html, slug) {
     // Verifica se há token GitHub configurado
     const githubToken = localStorage.getItem('github_token');
     
+    // 🔥 SEMPRE salva localmente primeiro (para funcionar offline/local)
+    console.log('💾 Salvando cópia local do post...');
+    await savePostLocally(html, slug);
+    console.log('✅ Post salvo localmente em /blog/posts/');
+    
     if (githubToken) {
-        // ✅ Token configurado - publica automaticamente no GitHub
-        console.log('🚀 Token GitHub encontrado! Publicando automaticamente...');
+        // ✅ Token configurado - publica automaticamente no GitHub também
+        console.log('🚀 Token GitHub encontrado! Publicando no GitHub também...');
         
         try {
             const publisher = window.initGitHubPublisher();
@@ -1580,27 +1585,68 @@ async function savePostToServer(html, slug) {
                 await publisher.savePost(slug, html);
                 const publicUrl = publisher.getPublicUrl(slug);
                 
-                console.log('✅ Post publicado com sucesso!');
+                console.log('✅ Post publicado no GitHub com sucesso!');
                 console.log('🔗 URL:', publicUrl);
                 
                 return {
                     success: true,
-                    method: 'github-api',
+                    method: 'local-and-github',
                     filename: slug + '.html',
                     url: publicUrl,
-                    message: '✅ Post publicado automaticamente no GitHub!'
+                    message: '✅ Post salvo localmente E publicado no GitHub!'
                 };
             }
         } catch (error) {
             console.error('❌ Erro ao publicar no GitHub:', error);
-            console.warn('⚠️ Fallback para download manual...');
-            // Continua para download manual como fallback
+            console.warn('⚠️ Post salvo apenas localmente');
+            
+            return {
+                success: true,
+                method: 'local-only',
+                filename: slug + '.html',
+                message: '⚠️ Post salvo localmente. Erro ao publicar no GitHub: ' + error.message
+            };
         }
     }
     
-    // ❌ Sem token ou erro - usa download manual
-    console.log('📥 Preparando post para download manual...');
-    return savePostAsDownload(html, slug);
+    // ❌ Sem token - salvo apenas localmente
+    console.log('📥 Post salvo apenas localmente (sem token GitHub)');
+    return {
+        success: true,
+        method: 'local-only',
+        filename: slug + '.html',
+        message: '✅ Post salvo localmente em /blog/posts/. Configure token GitHub para publicar online também.'
+    };
+}
+
+// Nova função para salvar arquivo localmente
+async function savePostLocally(html, slug) {
+    // Como estamos no navegador, não podemos salvar diretamente no sistema de arquivos
+    // Vamos fazer download automático do arquivo
+    const filename = `${slug}.html`;
+    
+    // Cria blob
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    
+    // Cria link de download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    
+    // Adiciona ao DOM, clica e remove
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 100);
+    
+    console.log(`📥 Iniciado download de: ${filename}`);
+    console.log('⚠️ IMPORTANTE: Mova o arquivo baixado para a pasta /blog/posts/ manualmente');
 }
 
 function savePostAsDownload(html, slug) {
@@ -2396,38 +2442,38 @@ async function generatePostHtml(data) {
     <!-- HEADER -->
     <header class="header" id="header">
         <nav class="nav container">
-            <a href="/" class="nav__logo">
-                <img src="../images/logo.avif" alt="Tigersaut Logo">
+            <a href="../../index.html" class="nav__logo">
+                <img src="../../images/logo.avif" alt="Tigersaut Logo">
             </a>
 
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="/" class="nav__link">Home</a>
+                        <a href="../../index.html" class="nav__link">Home</a>
                     </li>
                     <li class="nav__item nav__dropdown">
-                        <a href="/#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
+                        <a href="../../index.html#services" class="nav__link">Services <i class="arrow-down">▼</i></a>
                         <ul class="dropdown__menu">
-                            <li><a href="/windows">Window Installation</a></li>
-                            <li><a href="/roofing">Roofing Services</a></li>
-                            <li><a href="/bathroom">Bathroom Remodeling</a></li>
-                            <li><a href="/painting">Painting</a></li>
-                            <li><a href="/siding">Siding</a></li>
-                            <li><a href="/decks">Decks</a></li>
+                            <li><a href="../../windows.html">Window Installation</a></li>
+                            <li><a href="../../roofing.html">Roofing Services</a></li>
+                            <li><a href="../../bathroom.html">Bathroom Remodeling</a></li>
+                            <li><a href="../../painting.html">Painting</a></li>
+                            <li><a href="../../siding.html">Siding</a></li>
+                            <li><a href="../../decks.html">Decks</a></li>
                         </ul>
                     </li>
                     <li class="nav__item">
-                        <a href="/gallery" class="nav__link">Gallery</a>
+                        <a href="../../gallery.html" class="nav__link">Gallery</a>
                     </li>
                     <li class="nav__item">
                         <a href="../blog/index.html" class="nav__link active">Blog</a>
                     </li>
                     <li class="nav__item">
-                        <a href="/contact" class="nav__link">Contact</a>
+                        <a href="../../contact.html" class="nav__link">Contact</a>
                     </li>
                 </ul>
                 <div class="nav__menu-footer">
-                    <a href="/contact" class="nav__menu-cta">Get Free Estimate</a>
+                    <a href="../../contact.html" class="nav__menu-cta">Get Free Estimate</a>
                     <a href="tel:+19784796827" class="nav__menu-phone">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -2521,7 +2567,7 @@ async function generatePostHtml(data) {
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__column footer__brand">
-                    <img src="../images/logo.avif" alt="Tigersaut Logo" class="footer__logo">
+                    <img src="../../images/logo.avif" alt="Tigersaut Logo" class="footer__logo">
                     <p class="footer__tagline">Transform Your Home with Tigersaut</p>
                     <p class="footer__description">Adding that final touch that brings harmony to your place</p>
                     <div class="footer__social">
@@ -2537,22 +2583,22 @@ async function generatePostHtml(data) {
                 <div class="footer__column">
                     <h4 class="footer__title">Services</h4>
                     <ul class="footer__list">
-                        <li><a href="/windows">Window Installation</a></li>
-                        <li><a href="/roofing">Roofing Services</a></li>
-                        <li><a href="/bathroom">Bathroom Remodeling</a></li>
-                        <li><a href="/painting">Painting</a></li>
-                        <li><a href="/siding">Siding</a></li>
-                        <li><a href="/decks">Decks</a></li>
+                        <li><a href="../../windows.html">Window Installation</a></li>
+                        <li><a href="../../roofing.html">Roofing Services</a></li>
+                        <li><a href="../../bathroom.html">Bathroom Remodeling</a></li>
+                        <li><a href="../../painting.html">Painting</a></li>
+                        <li><a href="../../siding.html">Siding</a></li>
+                        <li><a href="../../decks.html">Decks</a></li>
                     </ul>
                 </div>
 
                 <div class="footer__column">
                     <h4 class="footer__title">Company</h4>
                     <ul class="footer__list">
-                        <li><a href="/">Home</a></li>
+                        <li><a href="../../index.html">Home</a></li>
                         <li><a href="../blog/index.html">Blog</a></li>
-                        <li><a href="/gallery">Gallery</a></li>
-                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="../../gallery.html">Gallery</a></li>
+                        <li><a href="../../contact.html">Contact</a></li>
                     </ul>
                 </div>
 
@@ -2576,6 +2622,7 @@ async function generatePostHtml(data) {
     <button id="backToTop" class="back-to-top" aria-label="${isEnglish ? 'Back to top' : 'Voltar ao topo'}">↑</button>
 
     <!-- SCRIPTS -->
+    <script src="../../js/main.js"></script>
     <script src="../assets/js/blog-post.js"></script>
 </body>
 </html>`;
@@ -2653,18 +2700,38 @@ function showSuccess(slug, result) {
         modal.querySelector('.modal-content').appendChild(messageElement);
     }
     
-    if (result && result.method === 'github-api') {
-        // ✅ Publicado automaticamente via GitHub API
+    if (result && result.method === 'local-and-github') {
+        // ✅ Salvo localmente E publicado no GitHub
+        messageElement.innerHTML = '🎉 <strong>Post salvo com sucesso!</strong><br>' +
+            '📥 <strong>Arquivo baixado</strong> - Mova para <code>/blog/posts/</code> para funcionar localmente<br>' +
+            '🚀 <strong>Publicado no GitHub</strong> - Disponível online em ~1 minuto';
+        messageElement.style.backgroundColor = '#d4edda';
+        messageElement.style.color = '#155724';
+        messageElement.style.fontWeight = 'bold';
+        
+        if (result.url) {
+            messageElement.innerHTML += `<br><br>🔗 <a href="${result.url}" target="_blank" style="color: #155724;">${result.url}</a>`;
+        }
+    } else if (result && result.method === 'local-only') {
+        // ⚠️ Salvo apenas localmente
+        messageElement.innerHTML = '📥 <strong>Arquivo baixado com sucesso!</strong><br>' +
+            '⚠️ Mova o arquivo para <code>/blog/posts/</code> para funcionar localmente<br>' +
+            '💡 Configure token GitHub para publicar online automaticamente';
+        messageElement.style.backgroundColor = '#fff3cd';
+        messageElement.style.color = '#856404';
+        messageElement.style.fontWeight = 'bold';
+    } else if (result && result.method === 'github-api') {
+        // ✅ Publicado automaticamente via GitHub API (legado)
         messageElement.innerHTML = '🚀 <strong>Post publicado automaticamente no GitHub!</strong><br>O post já está online em <code>/posts/</code>. Aguarde ~1 minuto para o GitHub Pages atualizar.';
         messageElement.style.backgroundColor = '#d4edda';
         messageElement.style.color = '#155724';
         messageElement.style.fontWeight = 'bold';
         
-        // Se tiver URL, mostra
         if (result.url) {
             messageElement.innerHTML += `<br><br>🔗 <a href="${result.url}" target="_blank" style="color: #155724;">${result.url}</a>`;
         }
     } else if (result && result.method === 'download') {
+        // Legado
         messageElement.innerHTML = '✅ <strong>Post gerado com sucesso!</strong><br>Baixe o HTML e faça commit na pasta <code>posts/</code> do GitHub.';
         messageElement.style.backgroundColor = '#fff3cd';
         messageElement.style.color = '#856404';

@@ -64,48 +64,116 @@ async function initBlog() {
 
 async function loadPosts() {
     try {
-        console.log('🚀 Carregando posts do GitHub...');
+        console.log('🚀 Carregando posts...');
         
         let htmlFiles = [];
+        let localPosts = [];
+        let githubPosts = [];
         
-        // Sempre busca do GitHub API (funciona local e online)
-        const response = await fetch('https://api.github.com/repos/mediagrowthmkt-debug/ws-tiger-st/contents/blog/posts');
-        
-        if (!response.ok) {
-            throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+        // 1. Tentar carregar posts locais primeiro
+        try {
+            console.log('📂 Tentando carregar posts locais...');
+            localPosts = await loadLocalPosts();
+            console.log('✅ Posts locais encontrados:', localPosts.length);
+        } catch (error) {
+            console.log('⚠️ Não foi possível carregar posts locais:', error.message);
         }
         
-        const files = await response.json();
-        console.log('📁 Arquivos encontrados no GitHub:', files.length);
+        // 2. Tentar carregar posts do GitHub
+        try {
+            console.log('🌐 Tentando carregar posts do GitHub...');
+            const response = await fetch('https://api.github.com/repos/mediagrowthmkt-debug/ws-tiger-st/contents/blog/posts');
+            
+            if (response.ok) {
+                const files = await response.json();
+                console.log('📁 Arquivos encontrados no GitHub:', files.length);
+                
+                // Filtrar apenas arquivos HTML (excluir README.md e index.html)
+                htmlFiles = files.filter(file => 
+                    file.name.endsWith('.html') && 
+                    file.name !== 'index.html' &&
+                    file.type === 'file'
+                );
+                
+                console.log('✅ Posts HTML do GitHub:', htmlFiles.length);
+                console.log('📝 Lista de posts:', htmlFiles.map(f => f.name));
+                
+                // Carregar metadados de cada post do GitHub Raw
+                const postPromises = htmlFiles.map(file => 
+                    loadPostMetadata(file.download_url, file.name)
+                );
+                
+                githubPosts = await Promise.all(postPromises);
+                githubPosts = githubPosts.filter(post => post !== null);
+                console.log('✅ Posts GitHub carregados:', githubPosts.length);
+            } else {
+                console.warn('⚠️ GitHub API retornou:', response.status);
+            }
+        } catch (error) {
+            console.warn('⚠️ Erro ao carregar do GitHub:', error.message);
+        }
         
-        // Filtrar apenas arquivos HTML (excluir README.md e index.html)
-        htmlFiles = files.filter(file => 
-            file.name.endsWith('.html') && 
-            file.name !== 'index.html' &&
-            file.type === 'file'
-        );
+        // 3. Combinar posts locais e do GitHub (remover duplicatas)
+        const combinedPosts = [...localPosts];
+        const localSlugs = new Set(localPosts.map(p => p.slug));
         
-        console.log('✅ Posts HTML encontrados:', htmlFiles.length);
-        console.log('📝 Lista de posts:', htmlFiles.map(f => f.name));
+        for (const githubPost of githubPosts) {
+            if (!localSlugs.has(githubPost.slug)) {
+                combinedPosts.push(githubPost);
+            }
+        }
         
-        // Carregar metadados de cada post do GitHub Raw
-        const postPromises = htmlFiles.map(file => 
-            loadPostMetadata(file.download_url, file.name)
-        );
-        
-        allPosts = await Promise.all(postPromises);
-        allPosts = allPosts.filter(post => post !== null);
+        allPosts = combinedPosts;
         
         // Sort by date (newest first)
         allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        console.log('📚 Total de posts carregados com metadados:', allPosts.length);
+        console.log('📚 Total de posts carregados:', allPosts.length);
+        console.log('  - Locais:', localPosts.length);
+        console.log('  - GitHub:', githubPosts.length);
+        console.log('  - Únicos:', allPosts.length);
+        
+        // Se não encontrou nenhum post, usa exemplos
+        if (allPosts.length === 0) {
+            console.warn('⚠️ Nenhum post encontrado, usando exemplos');
+            allPosts = getExamplePosts();
+        }
         
     } catch (error) {
         console.error('❌ Erro ao carregar posts:', error);
-        // Fallback: use example post
         allPosts = getExamplePosts();
     }
+}
+
+// Nova função para carregar posts locais
+async function loadLocalPosts() {
+    const localFiles = [
+        '5-signs-you-need-window-replacement.html',
+        'marble-or-granite-guide-for-your-home-in-worcester.html'
+        // Adicione aqui manualmente novos posts ou use um sistema de descoberta
+    ];
+    
+    const posts = [];
+    
+    for (const fileName of localFiles) {
+        try {
+            const url = `posts/${fileName}`;
+            const response = await fetch(url);
+            
+            if (response.ok) {
+                const html = await response.text();
+                const post = await loadPostMetadata(url, fileName);
+                if (post) {
+                    posts.push(post);
+                    console.log(`  ✅ Carregado: ${fileName}`);
+                }
+            }
+        } catch (error) {
+            console.log(`  ⚠️ Não encontrado localmente: ${fileName}`);
+        }
+    }
+    
+    return posts;
 }
 
 async function loadPostMetadata(downloadUrl, fileName) {
