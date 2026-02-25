@@ -1559,7 +1559,7 @@ ul {
         width: 100%;
         padding: 16px 24px;
         background-color: var(--color-secondary);
-        color: white;
+        color: white !important;
         text-align: center;
         font-family: var(--font-primary);
         font-size: 16px;
@@ -1570,6 +1570,7 @@ ul {
 
     .nav__menu-cta:hover {
         background-color: #8B1202;
+        color: white !important;
         transform: translateY(-2px);
     }
 
