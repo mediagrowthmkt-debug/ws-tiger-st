@@ -164,10 +164,20 @@ Palavra-chave Principal: sua palavra-chave
 
                 <div class="form-group">
                     <label for="authorAvatar">Avatar do Autor (URL)</label>
-                    <input type="url" 
-                           id="authorAvatar" 
-                           name="authorAvatar" 
-                           placeholder="https://exemplo.com/avatar.jpg">
+                    <div style="display: flex; gap: 10px; align-items: stretch;">
+                        <input type="url" 
+                               id="authorAvatar" 
+                               name="authorAvatar" 
+                               placeholder="https://exemplo.com/avatar.jpg"
+                               style="flex: 1;">
+                        <button type="button" 
+                                class="btn-upload" 
+                                onclick="handleAvatarUpload()"
+                                title="Upload de avatar para GitHub">
+                            📤 Upload
+                        </button>
+                    </div>
+                    <small class="field-info" id="authorAvatar-status" style="color: #666; display: none;"></small>
                 </div>
 
                 <div class="form-row">
@@ -1052,6 +1062,94 @@ Habilitar botões de compartilhamento? [Sim/Não]:</textarea>
                     
                     uploadBtn.textContent = '📤 Upload';
                     uploadBtn.disabled = false;
+                }
+            };
+            
+            // Trigger file selection
+            input.click();
+        }
+        
+        /**
+         * Handler para upload de Avatar do Autor
+         * Segue boas práticas do sistema v4.0 - Upload IMEDIATO para GitHub
+         */
+        async function handleAvatarUpload() {
+            // Verificar se token GitHub está configurado
+            const token = localStorage.getItem('github_token');
+            if (!token) {
+                alert('⚠️ Configure o GitHub token primeiro!\n\nClique em "⚙️ Configurar GitHub" no topo da página.');
+                return;
+            }
+            
+            // Criar input file temporário
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/jpeg,image/jpg,image/png,image/webp,image/avif,image/gif';
+            
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const statusEl = document.getElementById('authorAvatar-status');
+                const urlField = document.getElementById('authorAvatar');
+                const uploadBtn = event.target;
+                
+                try {
+                    // Mostrar loading
+                    if (uploadBtn && uploadBtn.tagName === 'BUTTON') {
+                        uploadBtn.disabled = true;
+                        uploadBtn.textContent = '⏳ Uploading...';
+                    }
+                    
+                    if (statusEl) {
+                        statusEl.style.display = 'block';
+                        statusEl.className = 'field-info upload-status loading';
+                        statusEl.textContent = `📤 Enviando avatar ${file.name}...`;
+                    }
+                    
+                    // Obter slug para organização por post (boas práticas v4.0)
+                    const slugField = document.getElementById('slug');
+                    const postSlug = slugField && slugField.value.trim() ? slugField.value.trim() : 'avatars';
+                    
+                    // Fazer upload via GitHub API
+                    // Avatar vai para pasta do post ou pasta 'avatars' se não tiver slug
+                    const folder = postSlug === 'avatars' ? 'arquivos/blog/avatars' : `arquivos/blog/${postSlug}`;
+                    const imageUrl = await uploadImageToGitHub(file, folder);
+                    
+                    // Preencher campo com URL
+                    urlField.value = imageUrl;
+                    urlField.dispatchEvent(new Event('input', { bubbles: true }));
+                    
+                    // Mostrar sucesso
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status success';
+                        statusEl.textContent = `✅ Avatar enviado! ${(file.size / 1024).toFixed(1)}KB`;
+                    }
+                    
+                    if (uploadBtn && uploadBtn.tagName === 'BUTTON') {
+                        uploadBtn.textContent = '✅ Sucesso';
+                        setTimeout(() => {
+                            uploadBtn.textContent = '📤 Upload';
+                            uploadBtn.disabled = false;
+                        }, 2000);
+                    }
+                    
+                    console.log('✅ Avatar uploaded:', imageUrl);
+                    
+                } catch (error) {
+                    console.error('Erro no upload do avatar:', error);
+                    
+                    if (statusEl) {
+                        statusEl.className = 'field-info upload-status error';
+                        statusEl.textContent = `❌ Erro: ${error.message}`;
+                    }
+                    
+                    alert(`❌ Erro ao fazer upload do avatar:\n\n${error.message}`);
+                    
+                    if (uploadBtn && uploadBtn.tagName === 'BUTTON') {
+                        uploadBtn.textContent = '📤 Upload';
+                        uploadBtn.disabled = false;
+                    }
                 }
             };
             
