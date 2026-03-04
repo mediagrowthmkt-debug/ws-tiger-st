@@ -494,15 +494,39 @@ ul {
 
 /* ===== SERVICES SECTION ===== */
 .services__grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     width: 100%;
 }
 
-@media (min-width: 993px) {
+@media (max-width: 992px) {
     .services__grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .services__grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+    
+    .service__image {
+        height: 220px;
+    }
+    
+    .service__content {
+        padding: 20px 16px 24px;
+    }
+    
+    .service__content h3 {
+        font-size: 18px;
+    }
+    
+    .service__content p {
+        font-size: 14px;
     }
 }
 
@@ -594,27 +618,6 @@ ul {
 
 .service__content .btn-accent:hover span {
     transform: translateX(4px);
-}
-
-@media (max-width: 992px) {
-    .services__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .services__grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    
-    .service__image {
-        height: 180px;
-    }
-    
-    .service__content {
-        padding: 24px 20px 28px;
-    }
 }
 
 /* ===== BENEFITS GRID ===== */
