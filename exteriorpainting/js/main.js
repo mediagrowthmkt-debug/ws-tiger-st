@@ -66,7 +66,6 @@ if (exteriorPaintingForm) {
         const formData = {
             name: document.getElementById('name').value,
             phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
             address: document.getElementById('address').value,
             message: document.getElementById('message').value,
             sms_consent: document.getElementById('sms_consent').checked,
@@ -75,15 +74,8 @@ if (exteriorPaintingForm) {
         };
         
         // Validate required fields
-        if (!formData.name || !formData.phone || !formData.email) {
+        if (!formData.name || !formData.phone || !formData.address) {
             alert('Please fill in all required fields.');
-            return;
-        }
-        
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            alert('Please enter a valid email address.');
             return;
         }
         
@@ -99,24 +91,17 @@ if (exteriorPaintingForm) {
         
         // Simulate API call delay
         setTimeout(() => {
-            // Reset form
-            exteriorPaintingForm.reset();
+            // Redirect to thank you page
+            window.location.href = 'thank-you.html';
             
-            // Reset button
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            
-            // Show success message
-            alert('Thank you for your interest! We\'ll contact you within 24 hours to schedule your free estimate.');
-            
-            // Optional: Track conversion for Google Ads
-            if (typeof gtag === 'function') {
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
-                    'value': 1.0,
-                    'currency': 'USD'
-                });
-            }
+            // Optional: Track conversion for Google Ads (will fire on thank you page)
+            // if (typeof gtag === 'function') {
+            //     gtag('event', 'conversion', {
+            //         'send_to': 'AW-17997693441/tnCACJjQ4IMcEIGE_IVD',
+            //         'value': 1.0,
+            //         'currency': 'USD'
+            //     });
+            // }
             
         }, 1500);
     });
@@ -200,7 +185,15 @@ document.querySelectorAll('a[href^="tel:"]').forEach(phoneLink => {
     phoneLink.addEventListener('click', function() {
         console.log('Phone number clicked');
         
+        // Fire conversion event for Google Ads
         if (typeof gtag === 'function') {
+            gtag('event', 'conversion', {
+                'send_to': 'AW-17997693441/tnCACJjQ4IMcEIGE_IVD',
+                'value': 1.0,
+                'currency': 'USD'
+            });
+            
+            // Also track as regular click event
             gtag('event', 'click', {
                 'event_category': 'Contact',
                 'event_label': 'Phone Call'
