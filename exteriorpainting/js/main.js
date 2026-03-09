@@ -74,7 +74,7 @@ if (exteriorPaintingForm) {
         console.log('[DEBUG] Form data:', data);
         
         // Validate required fields
-        if (!data.first_name || !data.phone || !data.email || !data.address1) {
+        if (!data.name || !data.phone || !data.address) {
             alert('Please fill in all required fields.');
             return;
         }
@@ -89,18 +89,18 @@ if (exteriorPaintingForm) {
         
         // Prepare webhook data
         const webhookData = {
-            NOME: data.first_name,
+            NOME: data.name,
             TELEFONE: data.phone,
-            EMAIL: data.email,
             FONTE: 'Exterior Painting Landing Page - Google Ads',
             PLATAFORMA: 'google ads',
-            'PERGUNTA QUALIFICATIVA': `Property Address: ${data.address1} | Project Details: ${data.project_details || 'Not provided'}`
+            ENDERECO: data.address,
+            'DETALHES DO PROJETO': data.message || 'Not provided'
         };
         
         console.log('[DEBUG] Sending data to webhook:', webhookData);
         
         // Send to webhook
-        fetch('https://mediagrowth-n8n.63kuy3.easypanel.host/webhook/ec939d78-6ec5-4a54-903d-d2db027319f2', {
+        fetch('https://mediagrowth-n8n.63kuy3.easypanel.host/webhook/71fb9d1c-b668-4cfe-9757-a4aca3353990', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
