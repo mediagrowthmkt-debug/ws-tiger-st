@@ -59,52 +59,73 @@ faqItems.forEach(item => {
 const exteriorPaintingForm = document.getElementById('exterior-painting-form');
 
 if (exteriorPaintingForm) {
+    console.log('[DEBUG] ✅ Form found - GHL will capture automatically');
+    
     exteriorPaintingForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default submission
         
-        // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            phone: document.getElementById('phone').value,
-            address: document.getElementById('address').value,
-            message: document.getElementById('message').value,
-            sms_consent: document.getElementById('sms_consent').checked,
-            source: 'Exterior Painting Landing Page',
-            service: 'Exterior Painting'
-        };
+        console.log('[DEBUG] ========== FORM SUBMITTED ==========');
+        console.log('[DEBUG] GHL is capturing form data automatically...');
+        
+        // Get form data for validation only
+        const formData = new FormData(exteriorPaintingForm);
+        const data = Object.fromEntries(formData.entries());
+        
+        console.log('[DEBUG] Form data:', data);
         
         // Validate required fields
-        if (!formData.name || !formData.phone || !formData.address) {
+        if (!data.first_name || !data.phone || !data.email || !data.address1) {
             alert('Please fill in all required fields.');
             return;
         }
         
-        // Show loading state
+        // Show loading
         const submitBtn = exteriorPaintingForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
+        if (submitBtn) {
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+        }
         
-        // Here you would typically send the data to your server
-        // For now, we'll simulate a successful submission
-        console.log('Form submitted:', formData);
+        // Prepare webhook data
+        const webhookData = {
+            NOME: data.first_name,
+            TELEFONE: data.phone,
+            EMAIL: data.email,
+            FONTE: 'Exterior Painting Landing Page - Google Ads',
+            PLATAFORMA: 'google ads',
+            'PERGUNTA QUALIFICATIVA': `Property Address: ${data.address1} | Project Details: ${data.project_details || 'Not provided'}`
+        };
         
-        // Simulate API call delay
-        setTimeout(() => {
-            // Redirect to thank you page
+        console.log('[DEBUG] Sending data to webhook:', webhookData);
+        
+        // Send to webhook
+        fetch('https://mediagrowth-n8n.63kuy3.easypanel.host/webhook/ec939d78-6ec5-4a54-903d-d2db027319f2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(webhookData)
+        })
+        .then(response => {
+            console.log('[DEBUG] ✅ Webhook response:', response.status);
+            return response.json().catch(() => ({})); // Handle non-JSON responses
+        })
+        .then(result => {
+            console.log('[DEBUG] ✅ Webhook result:', result);
+            console.log('[DEBUG] ✅ Form data captured by GHL and sent to webhook');
+            console.log('[DEBUG] ➡️ REDIRECTING to thank-you.html');
             window.location.href = 'thank-you.html';
-            
-            // Optional: Track conversion for Google Ads (will fire on thank you page)
-            // if (typeof gtag === 'function') {
-            //     gtag('event', 'conversion', {
-            //         'send_to': 'AW-17997693441/tnCACJjQ4IMcEIGE_IVD',
-            //         'value': 1.0,
-            //         'currency': 'USD'
-            //     });
-            // }
-            
-        }, 1500);
+        })
+        .catch(error => {
+            console.error('[DEBUG] ❌ Webhook error:', error);
+            // Still redirect even if webhook fails
+            console.log('[DEBUG] ⚠️ Webhook failed but redirecting anyway');
+            window.location.href = 'thank-you.html';
+        });
     });
+} else {
+    console.error('[DEBUG] ❌ Form NOT found!');
 }
 
 // ===== PHONE NUMBER FORMATTING =====
