@@ -184,48 +184,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===== CONTACT FORM HANDLING =====
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
+    console.log('[DEBUG] ✅ Contact form found');
+    console.log('[DEBUG] GHL will automatically capture this form on submit');
+    
+    // Simply show a success message after submission
+    // GHL automatically captures the form data
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        console.log('[DEBUG] ========== CONTACT FORM SUBMIT ==========');
+        console.log('[DEBUG] GHL is capturing form data automatically...');
         
-        // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            lastname: document.getElementById('lastname').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            service: document.getElementById('service').value,
-            message: document.getElementById('message').value
-        };
+        // Show loading message
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
         
-        // Here you would typically send the data to your server
-        // For now, we'll just log it and show a success message
-        console.log('Form submitted:', formData);
-        
-        // Show success message (you can customize this)
-        alert('Thank you for your message! We will get back to you within 24 hours.');
-        
-        // Reset form
-        contactForm.reset();
-        
-        // In production, you would do something like:
-        /*
-        fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
+        // Let GHL capture the form (it happens automatically)
+        // Then show success message after a short delay
+        setTimeout(function() {
+            e.preventDefault();
+            console.log('[DEBUG] ✅ Form submitted! GHL captured the data.');
+            
+            // Show success message
             alert('Thank you for your message! We will get back to you within 24 hours.');
+            
+            // Reset form
             contactForm.reset();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Sorry, there was an error sending your message. Please try again or call us directly.');
-        });
-        */
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }, 100);
     });
 }
 

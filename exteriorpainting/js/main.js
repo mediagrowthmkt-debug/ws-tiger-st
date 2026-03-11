@@ -206,7 +206,7 @@ document.querySelectorAll('a[href^="tel:"]').forEach(phoneLink => {
     phoneLink.addEventListener('click', function() {
         console.log('Phone number clicked');
         
-        // Fire conversion event for Google Ads
+        // Fire conversion event for Google Ads (same tag as form submission)
         if (typeof gtag === 'function') {
             gtag('event', 'conversion', {
                 'send_to': 'AW-17997693441/tnCACJjQ4IMcEIGE_IVD',
@@ -220,5 +220,23 @@ document.querySelectorAll('a[href^="tel:"]').forEach(phoneLink => {
                 'event_label': 'Phone Call'
             });
         }
+
+        // Send phone click to webhook (same as form submission)
+        const webhookData = {
+            NOME: 'Phone Call Click',
+            TELEFONE: '+1 (857) 243-3017',
+            EMAIL: '',
+            FONTE: 'Exterior Painting Landing Page - Google Ads',
+            PLATAFORMA: 'google ads',
+            'PERGUNTA QUALIFICATIVA': 'Property Address: N/A | Project Details: Lead via phone call click'
+        };
+
+        fetch('https://mediagrowth-n8n.63kuy3.easypanel.host/webhook/ec939d78-6ec5-4a54-903d-d2db027319f2', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(webhookData)
+        })
+        .then(() => console.log('[DEBUG] ✅ Phone click sent to webhook'))
+        .catch(err => console.error('[DEBUG] ❌ Webhook error on phone click:', err));
     });
 });

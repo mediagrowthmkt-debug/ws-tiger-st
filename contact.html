@@ -90,15 +90,15 @@
                     <h2 class="section__title">Get Your Project Started</h2>
                     <p class="contact__description">Fill out the form below and we'll get back to you within 24 hours.</p>
                     
-                    <form class="contact__form" id="contact-form">
+                    <form class="contact__form" id="contact-form" name="contact_form" method="post" action="">
                         <div class="form__row">
                             <div class="form__group">
                                 <label for="name">Name *</label>
-                                <input type="text" id="name" name="name" required>
+                                <input type="text" id="name" name="first_name" required>
                             </div>
                             <div class="form__group">
                                 <label for="lastname">Last name</label>
-                                <input type="text" id="lastname" name="lastname">
+                                <input type="text" id="lastname" name="last_name">
                             </div>
                         </div>
 
@@ -115,7 +115,7 @@
 
                         <div class="form__group">
                             <label for="service">Service Interested In</label>
-                            <select id="service" name="service">
+                            <select id="service" name="service_interested_in">
                                 <option value="">Select a service</option>
                                 <option value="windows">Window Installation</option>
                                 <option value="roofing">Roofing Services</option>
@@ -129,7 +129,7 @@
 
                         <div class="form__group">
                             <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="6" required></textarea>
+                            <textarea id="message" name="message_website_contact" rows="6" required></textarea>
                         </div>
 
                         <div class="form__group form__consent">
@@ -333,6 +333,30 @@
         <span class="floating-call__text">Call Now</span>
     </a>
 
-    <script src="js/main.js"></script>
+    <!-- GoHighLevel External Tracking Script -->
+    <script 
+      src="https://link.msgsndr.com/js/external-tracking.js"
+      data-tracking-id="tk_9468416754624bdebf72c18a6ff6f9a4"
+      data-debug="true">
+    </script>
+    
+    <!-- Debug script to check GHL loading -->
+    <script>
+        console.log('=== GHL TRACKING DEBUG (Contact Page) ===');
+        console.log('Script tag present: YES');
+        console.log('Tracking ID: tk_9468416754624bdebf72c18a6ff6f9a4');
+        
+        setTimeout(function() {
+            console.log('After 2s - Checking GHL...');
+            console.log('window.LCTracker:', typeof window.LCTracker);
+            if (typeof window.LCTracker === 'undefined') {
+                console.error('❌ GHL LCTracker NOT LOADED!');
+            } else {
+                console.log('✅ GHL LCTracker LOADED!');
+            }
+        }, 2000);
+    </script>
+
+    <script src="js/main.js" defer></script>
 </body>
 </html>
