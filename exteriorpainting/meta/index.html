@@ -887,7 +887,7 @@
                             <p class="form__subtitle">No obligation • Response in 24 hours</p>
                         </div>
                         <!-- Formulário com action apontando para thank-you da versão /meta -->
-                        <form class="contact__form" id="exterior-painting-form-meta" name="exterior_painting_form_meta" method="post" action="thank-you.html">
+                        <form class="contact__form" id="exterior-painting-form-meta" name="exterior_painting_form_meta" method="get" action="thank-you.html">
                             <div class="form__group">
                                 <label for="name">Name *</label>
                                 <input type="text" id="name" name="first_name" required placeholder="Your full name">
@@ -1022,5 +1022,13 @@
     </script>
 
     <script src="../js/main.js" defer></script>
+
+    <script>
+    // Intercepta o submit do formulário e redireciona para a página de obrigado
+    document.getElementById('exterior-painting-form-meta').addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.location.href = 'thank-you.html';
+    });
+    </script>
 </body>
 </html>
