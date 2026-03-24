@@ -1029,6 +1029,15 @@
         e.preventDefault();
         window.location.href = 'thank-you.html';
     });
+
+    // Dispara evento Lead ao clicar em qualquer botão de ligação
+    document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead');
+            }
+        });
+    });
     </script>
 </body>
 </html>
