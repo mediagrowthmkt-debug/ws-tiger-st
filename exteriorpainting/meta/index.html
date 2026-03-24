@@ -1021,23 +1021,6 @@
       data-debug="true">
     </script>
 
-    <script src="../js/main.js" defer></script>
-
-    <script>
-    // Intercepta o submit do formulário e redireciona para a página de obrigado
-    document.getElementById('exterior-painting-form-meta').addEventListener('submit', function(e) {
-        e.preventDefault();
-        window.location.href = 'thank-you.html';
-    });
-
-    // Dispara evento Lead ao clicar em qualquer botão de ligação
-    document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
-        el.addEventListener('click', function() {
-            if (typeof fbq === 'function') {
-                fbq('track', 'Lead');
-            }
-        });
-    });
-    </script>
+    <script src="main.js" defer></script>
 </body>
 </html>
